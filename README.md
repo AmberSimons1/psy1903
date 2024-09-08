@@ -1,5 +1,5 @@
 # psy1903
 
-## Your Name Here
+## Amber Simons
 
 Course work for psy1903
