@@ -5,7 +5,7 @@ Answer these equations as quickly and accurately as you can.`);
 
 let start1 = Date.now();
 
-let question1 = prompt("What is 3 + 4");
+let question1 = prompt("What is " + Math.floor(Math.random() * 10) + " + " + Math.floor(Math.random() * 10));
 
 let end1 = Date.now();
 
@@ -15,7 +15,7 @@ alert("You answered " + question1 + " in " + time1 + " seconds");
 
 let start2 = Date.now();
 
-let question2 = prompt("What is 4 + 2");
+let question2 = prompt("What is " + Math.floor(Math.random() * 10) + " + " + Math.floor(Math.random() * 10));
 
 let end2 = Date.now();
 
@@ -25,7 +25,7 @@ alert("You answered " + question2 + " in " + time2 + " seconds");
 
 let start3 = Date.now();
 
-let question3 = prompt("What is 7 + 1");
+let question3 = prompt("What is " + Math.floor(Math.random() * 10) + " + " + Math.floor(Math.random() * 10));
 
 let end3 = Date.now();
 
