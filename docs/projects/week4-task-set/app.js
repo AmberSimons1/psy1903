@@ -36,7 +36,7 @@ function getWordLengths(words) {
 }
 */
 
-
+/* 
 function getLongestWord(words) {
 
     let longestWord = ""
@@ -50,3 +50,19 @@ function getLongestWord(words) {
 
 let words = ['apple', 'banana', 'cherry', 'pear', 'grape'];
 console.log(getLongestWord(words)); // Expected output: banana
+*/
+
+/* 
+console.log(getOddNumbers([1, 2, 3, 4, 5])); // Expected output: [1, 3, 5]
+console.log(getOddNumbers([12, 45, 10, 11, 61])); // Expected output: [45, 11, 61]
+
+function getOddNumbers(nums) {
+    let results = [];
+    for (let num of nums) {
+        if (num % 2 != 0) {
+            results.push(num);
+        }
+    }
+    return results;
+}
+*/
