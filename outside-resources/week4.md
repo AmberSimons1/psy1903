@@ -15,6 +15,8 @@ function getRandomNumber(min, max) {
     return randomNumber
 }""
 
+"JS function that does length of word in an array "
+"JS function that does length of word"
 
 ## Outside sites
 
