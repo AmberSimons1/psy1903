@@ -18,4 +18,6 @@ function getRandomNumber(min, max) {
 
 ## Outside sites
 
-No outside sources
+Google - "can you have an if statement inside an if statement" (Freedom Scientific's answer) 
+
+
