@@ -45,7 +45,7 @@ function getLongestWord(words) {
             longestWord = word
         }
     }
-    return longestWord
+    return longestWord;
 }
 
 let words = ['apple', 'banana', 'cherry', 'pear', 'grape'];
@@ -66,3 +66,21 @@ function getOddNumbers(nums) {
     return results;
 }
 */
+
+
+function filterNumbers(nums, type) {
+    let results = [];
+    for (let num of nums) {
+        if (type == 'even' & num % 2 == 0) {
+            results.push(num);
+        } else if (type == 'odd' & num % 2 != 0)
+            results.push(num);
+    }
+    return results;
+}
+
+console.log(filterNumbers([1, 2, 3, 4, 5], 'even')); // Expected output: [2, 4]
+console.log(filterNumbers([1, 2, 3, 4, 5], 'odd')); // Expected output: [1, 3, 5]
+
+console.log(filterNumbers([45, 10, 11, 61, 20, 40, 46, 43], 'even')); // Expected output: [10]
+console.log(filterNumbers([45, 10, 11, 61], 'odd')); // Expected output: [45, 11, 61]
