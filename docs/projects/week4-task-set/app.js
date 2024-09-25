@@ -67,7 +67,7 @@ function getOddNumbers(nums) {
 }
 */
 
-
+/* 
 function filterNumbers(nums, type) {
     let results = [];
     for (let num of nums) {
@@ -84,3 +84,4 @@ console.log(filterNumbers([1, 2, 3, 4, 5], 'odd')); // Expected output: [1, 3, 5
 
 console.log(filterNumbers([45, 10, 11, 61, 20, 40, 46, 43], 'even')); // Expected output: [10]
 console.log(filterNumbers([45, 10, 11, 61], 'odd')); // Expected output: [45, 11, 61]
+*/
