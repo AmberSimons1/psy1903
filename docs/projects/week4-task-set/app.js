@@ -85,3 +85,42 @@ console.log(filterNumbers([1, 2, 3, 4, 5], 'odd')); // Expected output: [1, 3, 5
 console.log(filterNumbers([45, 10, 11, 61, 20, 40, 46, 43], 'even')); // Expected output: [10]
 console.log(filterNumbers([45, 10, 11, 61], 'odd')); // Expected output: [45, 11, 61]
 */
+
+alert(`Hello! Welcome to the Experiment! 
+There will be 5 trials.
+In each trial you will see a different random number.
+Please respond whether it is even (type “e”) or odd (type “o”).`)
+
+let results = [];
+
+for (i = 0; i < 5; i++) {
+    let answers = {};
+    let responses = '';
+
+    let num = getRandomNumber(1, 20);
+    let time1 = Date.now();
+
+    responses = prompt(num);
+
+    let time2 = Date.now();
+    let totalTime = (time2 - time1) / 1000;
+
+    let correct = false;
+    if ((responses == 'e' & num % 2 == 0) || (responses == 'o' & num % 2 != 0)) {
+        correct = true;
+    }
+
+    answers.response = responses;
+    answers.number = num;
+    answers.correct = correct;
+    answers.responseTime = totalTime;
+
+    results.push(answers);
+}
+
+console.log(results);
+
+function getRandomNumber(min, max) {
+    let randomNumber = Math.floor(Math.random() * max) + min;
+    return randomNumber;
+}

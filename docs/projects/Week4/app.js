@@ -175,9 +175,6 @@ console.log(person.age); // 30
  */
 
 
-
-
-
 function getRandomNumber(min, max) {
     let randomNumber = Math.floor(Math.random() * max) + min
     return randomNumber
