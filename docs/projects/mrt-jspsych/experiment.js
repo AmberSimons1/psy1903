@@ -12,10 +12,9 @@ let welcomeTrial = {
 
     // What content to display on the screen
     stimulus: `
-    <h1>Welcome to the Lexical Decision Task!</h1> 
-    <p>You are about to see a series of characters.</p>
-    <p>If the characters make up a word, press the F key.</p>
-    <p>If the characters do not make up a word, press the J key.</p>
+    <h1>Welcome to the Math Response Time Task!</h1> 
+    <p>In this experiment, you will be shown a series of math problems.</p>
+    <p>please answer as quickly and accurately as possible.</p>
     <p>Press SPACE to begin.</p>
     `,
 
@@ -25,6 +24,55 @@ let welcomeTrial = {
 
 // Add the welcome trial to our timeline
 timeline.push(welcomeTrial);
+
+for (let condition of conditions) {
+
+    let conditionTrial = {
+        type: jsPsychSurveyHtmlForm,
+        preamble: `<p>What is ${condition.num1} + ${condition.num2}</p> `,
+        html: `<p><input type='text' name='response' id='response'></p>`,
+        autofocus: 'response', // id of the field we want to auto-focus on when the trial starts
+        button_label: 'Submit Answer',
+        data: {
+            collect: true,
+            answer: condition.answer,
+            num1: condition.num1,
+            num2: condition.num2,
+        },
+        //2nd approach to adding data to output (data.correct = true is creating a
+        //new data property that isnt in .ignore())
+        on_finish: function (data) {
+            data.response = data.response.response;
+            if (data.response == condition.answer) {
+                data.correct = true;
+            } else {
+                data.correct = false;
+            }
+        },
+
+    }
+    timeline.push(conditionTrial);
+}
+
+// Debrief
+let debriefTrial = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
+    <h1>Thank you!</h1>
+    <p>You can now close this tab.</p>
+    `,
+    choices: ['NO KEYS'],
+    on_start: function () {
+        let data = jsPsych.data
+            .get()
+            .filter({ collect: true })
+            .ignore(['stimulus', 'trial_type', 'trial_index', 'plugin_version', 'collect'])
+            .csv();
+        console.log(data);
+    }
+}
+timeline.push(debriefTrial);
+
 
 // Run the experiment
 jsPsych.run(timeline);

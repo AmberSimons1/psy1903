@@ -49,7 +49,7 @@ for (let block of conditions) {
             //1st approach to adding data to output 
             data: {
                 collect: true,
-                characters: condition.characters,
+                answer: condition.characters,
                 blockId: block.title
             },
             //2nd approach to adding data to output (data.correct = true is creating a
