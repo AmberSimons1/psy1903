@@ -14,6 +14,7 @@ let welcomeTrial = {
     stimulus: `
     <h1>Welcome to the Math Response Time Task!</h1> 
     <p>In this experiment, you will be shown a series of math problems.</p>
+    <p>There are three parts to this experiment; the questions will increase in difficulty with each part</p>
     <p>please answer as quickly and accurately as possible.</p>
     <p>Press SPACE to begin.</p>
     `,
@@ -25,33 +26,50 @@ let welcomeTrial = {
 // Add the welcome trial to our timeline
 timeline.push(welcomeTrial);
 
-for (let condition of conditions) {
+for (let block of conditions) {
 
-    let conditionTrial = {
-        type: jsPsychSurveyHtmlForm,
-        preamble: `<p>What is ${condition.num1} + ${condition.num2}</p> `,
-        html: `<p><input type='text' name='response' id='response'></p>`,
-        autofocus: 'response', // id of the field we want to auto-focus on when the trial starts
-        button_label: 'Submit Answer',
-        data: {
-            collect: true,
-            answer: condition.answer,
-            num1: condition.num1,
-            num2: condition.num2,
-        },
-        //2nd approach to adding data to output (data.correct = true is creating a
-        //new data property that isnt in .ignore())
-        on_finish: function (data) {
-            data.response = data.response.response;
-            if (data.response == condition.answer) {
-                data.correct = true;
-            } else {
-                data.correct = false;
-            }
-        },
+    let blockIntroTrial = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `
+            <h1>${block.title}</h1>
+            <p>Press SPACE to begin.</p>
+            `,
+        choices: [' '],
+    };
 
+    let blockConditions = block.questions;
+
+    timeline.push(blockIntroTrial);
+
+    for (let condition of blockConditions) {
+
+        let conditionTrial = {
+            type: jsPsychSurveyHtmlForm,
+            preamble: `<p>What is ${condition.num1} + ${condition.num2}</p> `,
+            html: `<p><input type='text' name='response' id='response'></p>`,
+            autofocus: 'response', // id of the field we want to auto-focus on when the trial starts
+            button_label: 'Submit Answer',
+            data: {
+                collect: true,
+                answer: condition.answer,
+                num1: condition.num1,
+                num2: condition.num2,
+                block: block.title,
+            },
+            //2nd approach to adding data to output (data.correct = true is creating a
+            //new data property that isnt in .ignore())
+            on_finish: function (data) {
+                data.response = data.response.response;
+                if (data.response == condition.answer) {
+                    data.correct = true;
+                } else {
+                    data.correct = false;
+                }
+            },
+
+        }
+        timeline.push(conditionTrial);
     }
-    timeline.push(conditionTrial);
 }
 
 // Debrief
