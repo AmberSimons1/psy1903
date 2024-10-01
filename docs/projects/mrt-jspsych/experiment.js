@@ -4,6 +4,7 @@ let jsPsych = initJsPsych();
 // Define the timeline as an empty array where we will add all our trials
 let timeline = [];
 
+
 // Define a welcome trial using jsPsych’s jsPsychHtmlKeyboardResponse plugin
 let welcomeTrial = {
     // Indicate the plugin type we’re using
