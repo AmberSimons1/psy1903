@@ -26,6 +26,25 @@ let welcomeTrial = {
 // Add the welcome trial to our timeline
 timeline.push(welcomeTrial);
 
+let likert_scale = [
+    "Strongly Disagree",
+    "Disagree",
+    "Neutral",
+    "Agree",
+    "Strongly Agree"
+];
+
+var Questions = {
+    type: jsPsychSurveyLikert,
+    questions: [
+        { prompt: "I enjoy solving math problems.", name: 'Enjoyment', labels: likert_scale },
+        { prompt: "I find math easy.", name: 'Easy', labels: likert_scale },
+    ],
+}
+
+timeline.push(Questions)
+
+
 for (let block of conditions) {
 
     let blockIntroTrial = {
