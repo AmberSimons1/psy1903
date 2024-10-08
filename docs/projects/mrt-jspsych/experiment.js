@@ -12,11 +12,11 @@ let welcomeTrial = {
 
     // What content to display on the screen
     stimulus: `
-    <h1>Welcome to the Math Response Time Task!</h1> 
+    <h1><span class='name'>Welcome to the Math Response Time Task!</span></h1> 
     <p>In this experiment, you will be shown a series of math problems.</p>
     <p>There are three parts to this experiment; the questions will increase in difficulty with each part</p>
     <p>please answer as quickly and accurately as possible.</p>
-    <p>Press SPACE to begin.</p>
+    <p>Press <span class='key'>SPACE</span> to begin.</p>
     `,
 
     // Listen for the SPACE key to be pressed to proceed
@@ -45,7 +45,7 @@ for (let block of conditions) {
 
         let conditionTrial = {
             type: jsPsychSurveyHtmlForm,
-            preamble: `<p>What is ${condition.num1} + ${condition.num2}</p> `,
+            preamble: `<p><span class='equationStyle'> What is <span class='yellowBackground'>${condition.num1}</span> + <span class='yellowBackground'>${condition.num2}</span></span></p> `,
             html: `<p><input type='text' name='response' id='response'></p>`,
             autofocus: 'response', // id of the field we want to auto-focus on when the trial starts
             button_label: 'Submit Answer',
