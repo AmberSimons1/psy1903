@@ -17,7 +17,8 @@ Press the SPACE key to begin
 // Use CSS and <span> to make the word “space” look like a key
 // Adds the welcome screen to the timeline
 
-
+// Define the array of objects that contains the priming objects
+/* 
 let primeOptions = [
     {
         title: 'Queer',
@@ -46,8 +47,10 @@ let primeOptions = [
     }
 ];
 
+//randomize which primer is used
 let primer = primeOptions[getRandomNumber(0, 2)];
 
+//trial for the primer 
 let primingTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
@@ -63,65 +66,74 @@ let primingTrial = {
 };
 
 timeline.push(primingTrial);
-
-//Define a task 3 welcome page
-//Uses jsPsychHtmlKeyboardResponse plugin
-//Includes the H1 task 3 of 3
+*/
+//Define an IAT welcome page
 let iatWelcome = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `<h1> Task 2 of 3</h1>
     <p> in this final task, you will be shown a series of words and asked to sort them into categories.</p>
     <p> Press the SPACE key to begin. </p> 
-    `,
+    `, //space needs to have key  around it 
     choices: [' '],
 };
 
 timeline.push(iatWelcome);
 
-/*Includes the text “in this final task, you will be shown a series of words and asked to sort them into categories. Press the SPACE key to begin.”
-// Use CSS and <span> to make the word “space” look like a key
-// Add the task 3 welcome page to the timeline 
+for (let block of conditions) {
 
-//Use a for loop to iterate through each block in the conditions
-/*Start by defining the variables leftCategory and rightCategory and accessing the category in block.categories[] */
-//Define a variable count that should be set to 1 and will be used for each part
+    let leftCategory = block.categories[0];
+    let rightCategory = block.categories[1];
+    let count = 1;
 
-//Define an instructions page
-//Uses jsPsychHtmlKeyboardResponse plugin
-/*Includes the instructions: 
-Part *count*
-In this part the two categories will be: *leftCategory* and *rightCategory*
-If the word you see in the middle of the screen should be sorted into the *left category* press the F key.
-If the word should be sorted into the *rightCategory* press the J key.
-Press the SPACE key to begin… 
-*/
-/*the word “space” and the letters “F” and “J” should use CSS and the span element to look like keys*/
-//Add the instructions to the timeline 
-//count++;
+    let instructionsPage = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: `<h1>Part ${count}</h1>
+        <p> In this part the two categories will be: ${leftCategory} and ${rightCategory}</p>
+        <p> If the word you see in the middle of the screen should be sorted into the ${leftCategory} press the F key.</p>
+        <p> If the word should be sorted into the ${rightCategory} press the J key.</p>
+        <p> Press the SPACE key to begin </p>`
+        //the word “space” and the letters “F” and “J” should use CSS and the span element to look like keys
+    };
+    timeline.push(instructionsPage);
+    count++;
 
-//Add another for loop to iterate through block.trials 
-//Define a trial
-//Uses jsPsychKeyboardResponse plugin
-//The stimulus is the trial.word
-//The key choices are F and J 
-//reminder with left category (press F) and the right category (press J) should be in the left and right corners and above the word using css
-/*Add a data: {} with collect: true, trialType: ‘iat’, word: trial.word,              expectedCategory: trial.expectedCategory, expectedCategoryAsDisplayed: trial.expectedCategoryAsDisplayed, leftCategory: leftCategory,rightCategory: rightCategory, whichPrime: it.title */
-//This will make it so that the data for the trial is collected and add the other categories
-//Add an on_finish function
-//Includes an if statement
-//If data.response == trial.expectedResponse
-//data.correct = true
-//Else data.correct = false
-//Add the trial to the timeline 
+    //another for loop to iterate through the trials of each block
+    for (let trial of block.trials) {
 
-//Define a fixation trial
-//Uses jsPsychHtmlKeyboardResponse plugin 
-//The stimulus is a + 
-//Set the trial_duration to 250 ms
-//Set the choices to ‘NO KEY’
-//Push the fixation trial to the timeline
-/*this will repeat 36 times before moving on to the next block (change this in conditions file)*/
+        let wordTrial = {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: `${trial.word}`,
+            choices: ['f', 'j'],
+            //reminder with left category (press F) and the right category (press J) should be in the left and right corners and above the word using css
+            data: {
+                collect: true,
+                trialType: 'iat',
+                word: trial.word,
+                expectedCategory: trial.expectedCategory,
+                expectedCategoryAsDisplayed: trial.expectedCategoryAsDisplayed,
+                leftCategory: leftCategory,
+                rightCategory: rightCategory,
+            },
 
+            on_finish: function (data) {
+                if (data.response == trial.expectedResponse) {
+                    data.correct = true;
+                } else {
+                    data.correct = false;
+                }
+            }
+        };
+        timeline.push(wordTrial);
+
+        let fixationPage = {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: '+',
+            trial_duration: 250,
+            choices: 'NO KEYS'
+        }
+        timeline.push(fixationPage);
+    };
+};
 
 
 //Define a variable named “likertScale” which includes likert scale response options
