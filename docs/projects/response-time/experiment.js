@@ -118,7 +118,6 @@ let debriefTrial = {
     //         .ignore(['stimulus', 'trial_type', 'plugin_version', 'collect'])
     //         .csv();
     //     console.log(data);
-}
 };
 
 timeline.push(debriefTrial);
