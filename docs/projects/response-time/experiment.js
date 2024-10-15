@@ -109,7 +109,7 @@ let debriefTrial = {
     <h1>Thank you for participating!</h1> 
     <p>You can close this tab.</p>
     `,
-    choices: 'NO_KEYS',
+    choices: 'NO KEYS',
     // Dont need this because we are saving results as a file
     // on_start: function () {
     //     let data = jsPsych.data
