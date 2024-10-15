@@ -4,21 +4,17 @@ let jsPsych = initJsPsych();
 // Define the timeline as an empty array where we will add all our trials
 let timeline = [];
 
-// Define a welcome screen
-// Uses the jsPsychHtmlKeyboardResponse plugin
-// Includes a welcome message with the following content: 
-/*Welcome to our IAT!
-In this experiment, you will complete the following three tasks:
-In task 1 you will be asked to read a short story.
-In task 2 you will answer a brief set of questions.
-In task 3 you will be asked to categorize a series of words. 
-Press the SPACE key to begin
-*/
-// Use CSS and <span> to make the word “space” look like a key
-// Adds the welcome screen to the timeline
+let welcomePage = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `<h1>Welcome to our IAT </h1>
+    <p> In task 1 you will be asked to read a short story.
+    In task 2 you will be asked to categorize a series of words.
+    In task 3 you will answer a brief set of questions. 
+    Press the SPACE key to begin</p>`,
+    //space needs to look like a key
+    choices: [' ']
+};
 
-// Define the array of objects that contains the priming objects
-/* 
 let primeOptions = [
     {
         title: 'Queer',
@@ -65,8 +61,8 @@ let primingTrial = {
     },
 };
 
-timeline.push(primingTrial);
-*/
+//timeline.push(primingTrial);
+
 //Define an IAT welcome page
 let iatWelcome = {
     type: jsPsychHtmlKeyboardResponse,
@@ -77,25 +73,27 @@ let iatWelcome = {
     choices: [' '],
 };
 
-timeline.push(iatWelcome);
+//timeline.push(iatWelcome);
+let number = 1;
 
 for (let block of conditions) {
 
     let leftCategory = block.categories[0];
     let rightCategory = block.categories[1];
-    let count = 1;
 
     let instructionsPage = {
         type: jsPsychHtmlKeyboardResponse,
-        stimulus: `<h1>Part ${count}</h1>
+        stimulus: `<h1>Part ${number}</h1>
         <p> In this part the two categories will be: ${leftCategory} and ${rightCategory}</p>
         <p> If the word you see in the middle of the screen should be sorted into the ${leftCategory} press the F key.</p>
         <p> If the word should be sorted into the ${rightCategory} press the J key.</p>
-        <p> Press the SPACE key to begin </p>`
+        <p> Press the SPACE key to begin </p>`,
         //the word “space” and the letters “F” and “J” should use CSS and the span element to look like keys
+        choices: [' ']
     };
-    timeline.push(instructionsPage);
-    count++;
+    //timeline.push(instructionsPage);
+    number++;
+    console.log(count);
 
     //another for loop to iterate through the trials of each block
     for (let trial of block.trials) {
@@ -123,7 +121,7 @@ for (let block of conditions) {
                 }
             }
         };
-        timeline.push(wordTrial);
+        //timeline.push(wordTrial);
 
         let fixationPage = {
             type: jsPsychHtmlKeyboardResponse,
@@ -131,19 +129,115 @@ for (let block of conditions) {
             trial_duration: 250,
             choices: 'NO KEYS'
         }
-        timeline.push(fixationPage);
+        //timeline.push(fixationPage);
     };
 };
 
+let likert_scale = [
+    "Strongly Disagree",
+    "Disagree",
+    "Neutral",
+    "Agree",
+    "Strongly Agree"
+];
 
-//Define a variable named “likertScale” which includes likert scale response options
-//Define a questionnaire section
-//Uses the jsPsychSurveyLikert 
-/*Use the Preamble parameter to add the H1 “task 2 of 3” and the instructions “Please answer the following questions.”*/
-/*Define the questions parameter which contains an array of objects that have the question and sets the labels using the likertScale variable*/
-//Set data collect to true 
-//Push the questionnaire section to the timeline 
+var Questions = {
+    type: jsPsychSurveyLikert,
+    questions: [
+        { prompt: "Masculinity and femininity are determined by biological factors, such as genes and hormones, before birth.", name: 'Question1', labels: likert_scale },
+        { prompt: "There are only two sexes: male and female.", name: 'Question2', labels: likert_scale },
+        { prompt: "All people are either male or female.", name: 'Question3', labels: likert_scale },
+        { prompt: "Gender is the same thing as sex.", name: 'Question4', labels: likert_scale },
+        { prompt: "Sex is complex; in fact, there might even be more than two sexes.", name: 'Question5', labels: likert_scale },
+        { prompt: "Gender is a complicated issue, and it does not always match up with biological sex.", name: 'Question6', labels: likert_scale },
+        { prompt: "People who say that there are only two legitimate genders are mistaken.", name: 'Question7', labels: likert_scale },
+        { prompt: "In intimate relationships, women and men take on roles according to gender for a reason; it is really the best way to have a successful relationship.", name: 'Question9', labels: likert_scale },
+        { prompt: "In intimate relationships, people should act only according to what is traditionally expected of their gender.", name: 'Question10', labels: likert_scale },
+        { prompt: "It is perfectly okay for people to have intimate relationships with people of the same sex.", name: 'Question11', labels: likert_scale },
+        { prompt: "The best way to raise a child is to have a mother and a father raise the child together.", name: 'Question12', labels: likert_scale },
+        { prompt: "In healthy intimate relationships, women may sometimes take on stereotypical ‘male’ roles, and men may sometimes take on stereotypical ‘female’ roles.", name: 'Question13', labels: likert_scale },
+        { prompt: "Women and men need not fall into stereotypical gender roles when in an intimate relationship.", name: 'Question14', labels: likert_scale },
+        { prompt: "People should partner with whomever they choose, regardless of sex or gender", name: 'Question15', labels: likert_scale },
+        { prompt: "There are particular ways that men should act and particular ways that women should act in relationships.", name: 'Question16', labels: likert_scale },
+    ],
+    data: {
+        collect: true,
+    }
+};
 
+//timeline.push(Questions);
+
+
+let resultsTrial = {
+    type: jsPsychHtmlKeyboardResponse,
+    choices: ['NO KEYS'],
+    async: false,
+    stimulus: `
+        <h1>Please wait...</h1>
+        <p>We are saving the results of your inputs.</p>
+        `,
+    on_start: function () {
+        //  ⭐ Update the following three values as appropriate ⭐
+        let prefix = 'the-closet';
+        let dataPipeExperimentId = 'your-experiment-id-here';
+        let forceOSFSave = false;
+
+        // Filter and retrieve results as CSV data
+        let results = jsPsych.data
+            .get()
+            .filter({ collect: true })
+            .ignore(['stimulus', 'trial_type', 'plugin_version', 'collect'])
+            .csv();
+
+        // Generate a participant ID based on the current timestamp
+        let participantId = new Date().toISOString().replace(/T/, '-').replace(/\..+/, '').replace(/:/g, '-');
+
+        // Dynamically determine if the experiment is currently running locally or on production
+        let isLocalHost = window.location.href.includes('localhost');
+
+        let destination = '/save';
+        if (!isLocalHost || forceOSFSave) {
+            destination = 'https://pipe.jspsych.org/api/data/';
+        }
+
+        // Send the results to our saving end point
+        fetch(destination, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: '*/*',
+            },
+            body: JSON.stringify({
+                experimentID: dataPipeExperimentId,
+                filename: prefix + '-' + participantId + '.csv',
+                data: results,
+            }),
+        }).then(data => {
+            console.log(data);
+            jsPsych.finishTrial();
+        })
+    }
+}
+timeline.push(resultsTrial);
+
+// Debrief
+let debriefTrial = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
+    <h1>Thank you!</h1>
+    <p>You can now close this tab.</p>
+    `,
+    choices: ['NO KEYS'],
+    on_start: function () {
+        let data = jsPsych.data
+            .get()
+            .filter({ collect: true })
+            .ignore(['stimulus', 'trial_type', 'trial_index', 'plugin_version', 'collect'])
+            .csv();
+        console.log(data);
+    }
+}
+timeline.push(debriefTrial);
 
 
 /*Next there will be a results trial which will generate a page that tells the participant to please wait while we are saving the results of their input. It will also have a spiny thing on the page. This will use the code given to us for the results trial*/
