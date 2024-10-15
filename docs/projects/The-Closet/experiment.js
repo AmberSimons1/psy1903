@@ -21,30 +21,28 @@ Press the SPACE key to begin
 let primeOptions = [
     {
         title: 'Queer',
-        story: `A genderfluid bisexual person has been struggling with her mental health.
-                They have been feeling very stressed and anxious in a way that is beginning 
-                to impact their daily life. She has also started noticing some physical
-                manifestationsof her anxiety such as chest tightness and shortness of breath.
-                Although they have had many of these symptoms their whole life, they have been
-                more challenging to manage recently.`
+        story: ` A genderfluid bisexual person has been having a very difficult time with their mental health recently. 
+        She has been having feelings of impending doom and persistent negative thoughts about herself, 
+        which leads to greater feelings of sadness and worry. They have also been experiencing physical manifestations of 
+        these feelings such as chest tightness and overwhelming fatigue. She has had some of these symptoms for most of her 
+        life, but has noticed an increased intensity lately. Overall, the anxiety and depression they have been facing have been 
+        challenging to manage.`
     },
     {
         title: 'CisHet',
-        story: `A cisgender straight woman has been struggling with her mental health.
-                She has been feeling very stressed and anxious in a way that is beginning
-                to impact her daily life. She has also started noticing some physical
-                manifestations of her anxiety such as chest tightness and shortness of breath.
-                Although she has had many of these symptoms her whole life, they have been more
-                challenging to manage recently.`
+        story: `A cisgender straight person has been having a very difficult time with her mental health recently. She has been
+         having feelings of impending doom and persistent negative thoughts about herself, which leads to greater feelings of sadness
+         and worry. She has also been experiencing physical manifestations of these feelings such as chest tightness and overwhelming fatigue. 
+         She has had some of these symptoms for most of her life, but has noticed an increased intensity lately. Overall, the anxiety and 
+         depression she has been facing have been challenging to manage.`
     },
     {
         title: 'Control',
-        story: `A person has been struggling with their mental health. This person has been 
-                feeling very stressed and anxious in a way that is beginning to impact daily life.  
-                The person has also started noticing some physical manifestations of anxiety such 
-                as chest tightness and shortness of breath. Although this person has had many of  
-                these symptoms their whole life, the symptoms have been more challenging to manage 
-                recently.`
+        story: `A person has been having a very difficult time with their mental health recently. The person has been having feelings 
+        of impending doom and persistent negative self-thoughts, which leads to greater feelings of sadness and worry. 
+        This person has also been experiencing physical manifestations of these feelings such as chest tightness and overwhelming fatigue. 
+        The person has had some of these symptoms for most of their life, but has noticed an increased intensity lately. 
+        Overall, the anxiety and depression this person has been facing have been challenging to manage.`
     }
 ];
 
@@ -66,17 +64,20 @@ let primingTrial = {
 
 timeline.push(primingTrial);
 
-//Define a variable named “likertScale” which includes likert scale response options
-//Define a questionnaire section
-//Uses the jsPsychSurveyLikert 
-/*Use the Preamble parameter to add the H1 “task 2 of 3” and the instructions “Please answer the following questions.”*/
-/*Define the questions parameter which contains an array of objects that have the question and sets the labels using the likertScale variable*/
-//Set data collect to true 
-//Push the questionnaire section to the timeline 
-
 //Define a task 3 welcome page
 //Uses jsPsychHtmlKeyboardResponse plugin
 //Includes the H1 task 3 of 3
+let iatWelcome = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `<h1> Task 2 of 3</h1>
+    <p> in this final task, you will be shown a series of words and asked to sort them into categories.</p>
+    <p> Press the SPACE key to begin. </p> 
+    `,
+    choices: [' '],
+};
+
+timeline.push(iatWelcome);
+
 /*Includes the text “in this final task, you will be shown a series of words and asked to sort them into categories. Press the SPACE key to begin.”
 // Use CSS and <span> to make the word “space” look like a key
 // Add the task 3 welcome page to the timeline 
@@ -120,6 +121,18 @@ Press the SPACE key to begin…
 //Set the choices to ‘NO KEY’
 //Push the fixation trial to the timeline
 /*this will repeat 36 times before moving on to the next block (change this in conditions file)*/
+
+
+
+//Define a variable named “likertScale” which includes likert scale response options
+//Define a questionnaire section
+//Uses the jsPsychSurveyLikert 
+/*Use the Preamble parameter to add the H1 “task 2 of 3” and the instructions “Please answer the following questions.”*/
+/*Define the questions parameter which contains an array of objects that have the question and sets the labels using the likertScale variable*/
+//Set data collect to true 
+//Push the questionnaire section to the timeline 
+
+
 
 /*Next there will be a results trial which will generate a page that tells the participant to please wait while we are saving the results of their input. It will also have a spiny thing on the page. This will use the code given to us for the results trial*/
 
