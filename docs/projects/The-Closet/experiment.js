@@ -1,3 +1,5 @@
+//Need to add CSS 
+
 // Initialize the jsPsych library
 let jsPsych = initJsPsych();
 
@@ -225,7 +227,7 @@ let debriefTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
     <h1>Thank you!</h1>
-    <p>You can now close this tab.</p>
+    <p>The experiment is now complete; you can close this tab</p>
     `,
     choices: ['NO KEYS'],
     on_start: function () {
@@ -238,14 +240,6 @@ let debriefTrial = {
     }
 }
 timeline.push(debriefTrial);
-
-
-/*Next there will be a results trial which will generate a page that tells the participant to please wait while we are saving the results of their input. It will also have a spiny thing on the page. This will use the code given to us for the results trial*/
-
-//Define a debrief trial
-/*instructions will say Thank You! The experiment is now complete; you can close this tab*/
-// Choices should be NO KEY
-//Push the debrief trial to the timeline
 
 jsPsych.run(timeline);
 
