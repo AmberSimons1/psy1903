@@ -9,8 +9,8 @@ let welcomePage = {
     stimulus: `<h1>Welcome to our IAT </h1>
     <p class = 'instruct'> In task 1 you will be asked to read a short story.
     In task 2 you will be asked to categorize a series of words.
-    In task 3 you will answer a brief set of questions. 
-    Press the <span class = 'key'>SPACE</span> key to begin</p>`,
+    In task 3 you will answer a brief set of questions.</p>
+    <p class = 'welcomeInstruct'>Press the <span class = 'key'>SPACE</span> key to begin</p>`,
     choices: [' ']
 };
 timeline.push(welcomePage)
@@ -52,10 +52,10 @@ let primingTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
         <h1>Task 1 of 3</h1>
-        <p class = 'please'> Please read the following story. When you are done, press the <span class = 'key'>SPACE</span> key to move to the next task. </p>
+        <p class = 'please'> Please read the following story. When you are done, press the <span class = 'key'>ENTER</span> key to move to the next task. </p>
         <p> ${primer.story}
         `,
-    choices: [' '],
+    choices: ['Enter'],
     data: {
         collect: true,
         whichPrime: primer.title,
@@ -68,9 +68,9 @@ timeline.push(primingTrial);
 let iatWelcome = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `<h1> Task 2 of 3</h1>
-    <p> in this final task, you will be shown a series of words and asked to sort them into categories.</p>
-    <p> Press the <span class = 'key'>SPACE</span> key to begin. </p> 
-    `, //space needs to have key  around it 
+    <p class= 'instructPerTask'> In this final task, you will be shown a series of words and asked to sort them into categories.</p>
+    <p> Press the <span class = 'key'>SPACE</span> key to begin. </p>
+    `,
     choices: [' '],
 };
 
@@ -88,9 +88,9 @@ for (let block of conditions) {
         <p> In this part the two categories will be: <strong>${leftCategory}</strong> and <strong>${rightCategory}</strong></p>
         <p> If the word you see in the middle of the screen should be sorted into the <strong>${leftCategory}</strong> press the <span class = 'key'>F</span> key.</p>
         <p> If the word should be sorted into the <strong>${rightCategory}</strong> press the <span class = 'key'>J</span> key.</p>
-        <p> Press the <span class = 'key'>SPACE</span> key to begin </p>`,
+        <p> Press the <span class = 'key'>ENTER</span> key to begin </p>`,
         //the word “space” and the letters “F” and “J” should use CSS and the span element to look like keys
-        choices: [' ']
+        choices: ['Enter']
     };
     timeline.push(instructionsPage);
     number++;
@@ -149,6 +149,8 @@ let likert_scale = [
 
 var Questions = {
     type: jsPsychSurveyLikert,
+    preamble: `<h1>Task 2 of 3</h1>
+    <p> Please answer the following questions.`,
     questions: [
         { prompt: "Masculinity and femininity are determined by biological factors, such as genes and hormones, before birth.", name: 'Question1', labels: likert_scale },
         { prompt: "There are only two sexes: male and female.", name: 'Question2', labels: likert_scale },
@@ -179,9 +181,9 @@ let resultsTrial = {
     choices: ['NO KEYS'],
     async: false,
     stimulus: `
-        <h1>Please wait...</h1>
-        <p>We are saving the results of your inputs.</p>
-        `,
+        < h1 > Please wait...</h1>
+    <p>We are saving the results of your inputs.</p>
+`,
     on_start: function () {
         //  ⭐ Update the following three values as appropriate ⭐
         let prefix = 'the-closet';
@@ -231,7 +233,7 @@ let debriefTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
     <h1>Thank you!</h1>
-    <p>The experiment is now complete; you can close this tab</p>
+    <p>The experiment is now complete; you can close this tab!</p>
     `,
     choices: ['NO KEYS'],
     on_start: function () {

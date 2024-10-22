@@ -11,6 +11,20 @@
         /*you could do margin-left margin-right etc, margin auto will make it the same on all sides*/
 }
 
+.instructPerTask {
+    font-size: 30px;
+    line-height: 2;
+    width: 1000px;
+    margin: auto
+}
+
+.welcomeInstruct {
+    font-size: 25px;
+    line-height: 2;
+    width: 1000px;
+    margin: auto
+}
+
 .please {
     font-size: 25px;
 }
