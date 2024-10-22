@@ -137,7 +137,7 @@ for (let block of conditions) {
             stimulus: `<p class='word'>+</p>
             `,
             trial_duration: 250,
-            choices: 'NO KEYS'
+            choices: '[NO KEYS]'
         }
         timeline.push(fixationPage);
     };
