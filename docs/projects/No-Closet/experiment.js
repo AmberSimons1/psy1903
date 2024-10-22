@@ -27,8 +27,7 @@ let primeOptions = [
         which leads to greater feelings of sadness and worry. They have also been experiencing physical manifestations of 
         these feelings such as chest tightness and overwhelming fatigue. She has had some of these symptoms for most of her 
         life, but has noticed an increased intensity lately. Overall, the anxiety and depression they have been facing have been 
-        challenging to manage.</p>`
-        //the 'instruct' class is to designate line spacing for body text of instructions screens
+        challenging to manage.</p>` //the 'instruct' class is to designate line spacing for body text of instructions screens
     },
     {
         title: 'CisHet',
@@ -48,7 +47,6 @@ let primeOptions = [
     }
 ];
 
-//randomize which primer is used
 let primer = primeOptions[getRandomNumber(0, 2)];
 
 //trial for the primer 
@@ -56,13 +54,15 @@ let primingTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
         <h1>Task 1 of 3</h1>
-        <p class = 'please'> Please read the following story. When you are done, press the <span class = 'key'>ENTER</span> key to move to the next task. </p>
+        <p class = 'instructPerTask'> Please read the following story. When you are done, press the <span class = 'key'>ENTER</span> key to move to the next task. </p>
         <p> ${primer.story}
         `,
     choices: ['Enter'],
     data: {
         collect: true,
         whichPrime: primer.title,
+        trialType: 'prime'
+
     },
 };
 
@@ -174,6 +174,7 @@ var Questions = {
     ],
     data: {
         collect: true,
+        trialType: 'Questionnaire'
     }
 };
 
