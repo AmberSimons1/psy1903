@@ -85,10 +85,10 @@ for (let block of conditions) {
     let instructionsPage = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `<h1>Part ${number}</h1>
-        <p> In this part the two categories will be: ${leftCategory} and ${rightCategory}</p>
-        <p> If the word you see in the middle of the screen should be sorted into the ${leftCategory} press the F key.</p>
-        <p> If the word should be sorted into the ${rightCategory} press the J key.</p>
-        <p> Press the SPACE key to begin </p>`,
+        <p> In this part the two categories will be: <strong>${leftCategory}</strong> and <strong>${rightCategory}</strong></p>
+        <p> If the word you see in the middle of the screen should be sorted into the <strong>${leftCategory}</strong> press the <span class = 'key'>F</span> key.</p>
+        <p> If the word should be sorted into the <strong>${rightCategory}</strong> press the <span class = 'key'>J</span> key.</p>
+        <p> Press the <span class = 'key'>SPACE</span> key to begin </p>`,
         //the word “space” and the letters “F” and “J” should use CSS and the span element to look like keys
         choices: [' ']
     };
@@ -130,7 +130,8 @@ for (let block of conditions) {
 
         let fixationPage = {
             type: jsPsychHtmlKeyboardResponse,
-            stimulus: '+',
+            stimulus: `<p class='word'>+</p>
+            `,
             trial_duration: 250,
             choices: 'NO KEYS'
         }
