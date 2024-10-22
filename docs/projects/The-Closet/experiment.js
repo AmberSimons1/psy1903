@@ -7,10 +7,14 @@ let timeline = [];
 let welcomePage = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `<h1>Welcome to our IAT </h1>
-    <p class = 'instruct'> In task 1 you will be asked to read a short story.
-    In task 2 you will be asked to categorize a series of words.
-    In task 3 you will answer a brief set of questions.</p>
-    <p class = 'welcomeInstruct'>Press the <span class = 'key'>SPACE</span> key to begin</p>`,
+   <div class="instruction-box">
+            <ul>
+                <li>In task 1 you will be asked to read a short story.</li>
+                <li>In task 2 you will be asked to categorize a series of words.</li>
+                <li>In task 3 you will answer a brief set of questions.</li>
+            </ul>
+        </div>
+    <p>Press the <span class = 'key'>SPACE</span> key to begin</p>`,
     choices: [' ']
 };
 timeline.push(welcomePage)
@@ -18,7 +22,7 @@ timeline.push(welcomePage)
 let primeOptions = [
     {
         title: 'Queer',
-        story: `<p class = 'instruct'>A genderfluid bisexual person has been having a very difficult time with their mental health recently. 
+        story: `<p class = 'instruction-box'>A genderfluid bisexual person has been having a very difficult time with their mental health recently. 
         She has been having feelings of impending doom and persistent negative thoughts about herself, 
         which leads to greater feelings of sadness and worry. They have also been experiencing physical manifestations of 
         these feelings such as chest tightness and overwhelming fatigue. She has had some of these symptoms for most of her 
@@ -28,7 +32,7 @@ let primeOptions = [
     },
     {
         title: 'CisHet',
-        story: `<p class = 'instruct'>A cisgender straight person has been having a very difficult time with her mental health recently. She has been
+        story: `<p class = 'instruction-box'>A cisgender straight person has been having a very difficult time with her mental health recently. She has been
          having feelings of impending doom and persistent negative thoughts about herself, which leads to greater feelings of sadness
          and worry. She has also been experiencing physical manifestations of these feelings such as chest tightness and overwhelming fatigue. 
          She has had some of these symptoms for most of her life, but has noticed an increased intensity lately. Overall, the anxiety and 
@@ -36,7 +40,7 @@ let primeOptions = [
     },
     {
         title: 'Control',
-        story: `<p class = 'instruct'>A person has been having a very difficult time with their mental health recently. The person has been having feelings 
+        story: `<p class = 'instruction-box'>A person has been having a very difficult time with their mental health recently. The person has been having feelings 
         of impending doom and persistent negative self-thoughts, which leads to greater feelings of sadness and worry. 
         This person has also been experiencing physical manifestations of these feelings such as chest tightness and overwhelming fatigue. 
         The person has had some of these symptoms for most of their life, but has noticed an increased intensity lately. 
