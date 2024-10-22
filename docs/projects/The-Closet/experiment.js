@@ -1,5 +1,3 @@
-//Need to add CSS 
-
 // Initialize the jsPsych library
 let jsPsych = initJsPsych();
 
@@ -9,39 +7,40 @@ let timeline = [];
 let welcomePage = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `<h1>Welcome to our IAT </h1>
-    <p> In task 1 you will be asked to read a short story.
+    <p class = 'instruct'> In task 1 you will be asked to read a short story.
     In task 2 you will be asked to categorize a series of words.
     In task 3 you will answer a brief set of questions. 
-    Press the SPACE key to begin</p>`,
-    //space needs to look like a key
+    Press the <span class = 'key'>SPACE</span> key to begin</p>`,
     choices: [' ']
 };
+timeline.push(welcomePage)
 
 let primeOptions = [
     {
         title: 'Queer',
-        story: ` A genderfluid bisexual person has been having a very difficult time with their mental health recently. 
+        story: `<p class = 'instruct'>A genderfluid bisexual person has been having a very difficult time with their mental health recently. 
         She has been having feelings of impending doom and persistent negative thoughts about herself, 
         which leads to greater feelings of sadness and worry. They have also been experiencing physical manifestations of 
         these feelings such as chest tightness and overwhelming fatigue. She has had some of these symptoms for most of her 
         life, but has noticed an increased intensity lately. Overall, the anxiety and depression they have been facing have been 
-        challenging to manage.`
+        challenging to manage.</p>`
+        //the 'instruct' class is to designate line spacing for body text of instructions screens
     },
     {
         title: 'CisHet',
-        story: `A cisgender straight person has been having a very difficult time with her mental health recently. She has been
+        story: `<p class = 'instruct'>A cisgender straight person has been having a very difficult time with her mental health recently. She has been
          having feelings of impending doom and persistent negative thoughts about herself, which leads to greater feelings of sadness
          and worry. She has also been experiencing physical manifestations of these feelings such as chest tightness and overwhelming fatigue. 
          She has had some of these symptoms for most of her life, but has noticed an increased intensity lately. Overall, the anxiety and 
-         depression she has been facing have been challenging to manage.`
+         depression she has been facing have been challenging to manage.</p>`
     },
     {
         title: 'Control',
-        story: `A person has been having a very difficult time with their mental health recently. The person has been having feelings 
+        story: `<p class = 'instruct'>A person has been having a very difficult time with their mental health recently. The person has been having feelings 
         of impending doom and persistent negative self-thoughts, which leads to greater feelings of sadness and worry. 
         This person has also been experiencing physical manifestations of these feelings such as chest tightness and overwhelming fatigue. 
         The person has had some of these symptoms for most of their life, but has noticed an increased intensity lately. 
-        Overall, the anxiety and depression this person has been facing have been challenging to manage.`
+        Overall, the anxiety and depression this person has been facing have been challenging to manage.</p>`
     }
 ];
 
@@ -53,7 +52,7 @@ let primingTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
         <h1>Task 1 of 3</h1>
-        <p> Please read the following story. When you are done, press the SPACE key to move to the next task </p>
+        <p class = 'please'> Please read the following story. When you are done, press the <span class = 'key'>SPACE</span> key to move to the next task. </p>
         <p> ${primer.story}
         `,
     choices: [' '],
@@ -63,19 +62,19 @@ let primingTrial = {
     },
 };
 
-//timeline.push(primingTrial);
+timeline.push(primingTrial);
 
 //Define an IAT welcome page
 let iatWelcome = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `<h1> Task 2 of 3</h1>
     <p> in this final task, you will be shown a series of words and asked to sort them into categories.</p>
-    <p> Press the SPACE key to begin. </p> 
+    <p> Press the <span class = 'key'>SPACE</span> key to begin. </p> 
     `, //space needs to have key  around it 
     choices: [' '],
 };
 
-//timeline.push(iatWelcome);
+timeline.push(iatWelcome);
 let number = 1;
 
 for (let block of conditions) {
@@ -93,7 +92,7 @@ for (let block of conditions) {
         //the word “space” and the letters “F” and “J” should use CSS and the span element to look like keys
         choices: [' ']
     };
-    //timeline.push(instructionsPage);
+    timeline.push(instructionsPage);
     number++;
     console.log(count);
 
@@ -102,7 +101,11 @@ for (let block of conditions) {
 
         let wordTrial = {
             type: jsPsychHtmlKeyboardResponse,
-            stimulus: `${trial.word}`,
+            stimulus: `
+            <span class='category1'> <strong>${leftCategory}</strong> (press F)</span>
+            <span class='category2'> <strong>${rightCategory}</strong> (press J)</span>
+            <p class='word'>${trial.word}</p>`
+            ,
             choices: ['f', 'j'],
             //reminder with left category (press F) and the right category (press J) should be in the left and right corners and above the word using css
             data: {
@@ -123,7 +126,7 @@ for (let block of conditions) {
                 }
             }
         };
-        //timeline.push(wordTrial);
+        timeline.push(wordTrial);
 
         let fixationPage = {
             type: jsPsychHtmlKeyboardResponse,
@@ -131,7 +134,7 @@ for (let block of conditions) {
             trial_duration: 250,
             choices: 'NO KEYS'
         }
-        //timeline.push(fixationPage);
+        timeline.push(fixationPage);
     };
 };
 
@@ -167,7 +170,7 @@ var Questions = {
     }
 };
 
-//timeline.push(Questions);
+timeline.push(Questions);
 
 
 let resultsTrial = {
