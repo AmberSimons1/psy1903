@@ -180,19 +180,18 @@ var Questions = {
 
 timeline.push(Questions);
 
-
 let resultsTrial = {
     type: jsPsychHtmlKeyboardResponse,
     choices: ['NO KEYS'],
     async: false,
     stimulus: `
-        < h1 > Please wait...</h1>
-    <p>We are saving the results of your inputs.</p>
-`,
+        <h1>Please wait...</h1>
+        <p>We are saving the results of your inputs.</p>
+        `,
     on_start: function () {
         //  ⭐ Update the following three values as appropriate ⭐
-        let prefix = 'the-closet';
-        let dataPipeExperimentId = 'your-experiment-id-here';
+        let prefix = 'no-closet';
+        let dataPipeExperimentId = 'UKOmlhbKicSb';
         let forceOSFSave = false;
 
         // Filter and retrieve results as CSV data
@@ -231,6 +230,7 @@ let resultsTrial = {
         })
     }
 }
+
 timeline.push(resultsTrial);
 
 // Debrief
