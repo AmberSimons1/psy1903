@@ -1,5 +1,7 @@
 //always very first thing to do when using js psych
-let jsPsych = initJsPsych();
+let jsPsych = initJsPsych({
+    show_progress_bar: true
+});
 
 //create timeline
 let timeline = [];
@@ -16,6 +18,28 @@ let trial = {
 };
 //timeline.push(trial);
 
+let ageCheckTrial = {
+    type: jsPsychSurveyHtmlForm,
+    html: `
+    <h1>Welcome!</h1> 
+    Please enter your age to continue: <input type='text' name='age' id='age'>
+    `,
+    autofocus: 'age',
+    on_finish: function (data) {
+        if (data.response.age < 18) {
+            jsPsych.abortExperiment('You must be 18 years or older to complete this experiment.');
+        }
+    }
+}
+timeline.push(ageCheckTrial);
+
+let enterFullScreenTrial = {
+    type: jsPsychFullscreen,
+    fullscreen_mode: true
+};
+
+timeline.push(enterFullScreenTrial);
+
 //Welcome stage
 let welcomeTrial = {
     type: jsPsychHtmlKeyboardResponse,
@@ -28,6 +52,28 @@ let welcomeTrial = {
     choices: [' '],
 };
 timeline.push(welcomeTrial);
+
+let primeTrial = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: `
+        <p>You were randomly chosen to see this trial.</p> 
+        <p>Press the <span class='key'>SPACE</span> key to continue.</p>
+        `,
+    choices: [' '],
+    data: {
+        collect: true,
+        trialType: 'prime',
+    },
+    on_load: function () {
+        if (getRandomNumber(0, 1) == 0) {
+            jsPsych.data.addProperties({ sawPrime: false });
+            jsPsych.finishTrial();
+        } else {
+            jsPsych.data.addProperties({ sawPrime: true });
+        }
+    }
+}
+timeline.push(primeTrial);
 
 //Showed word or pseudo word (on repeat)
 
@@ -76,6 +122,21 @@ for (let block of conditions) {
             }
         }
         timeline.push(conditionTrial);
+
+        let feedbackTrial = {
+            type: jsPsychHtmlKeyboardResponse,
+            stimulus: `<h1>Incorrect</h1>`,
+            trial_duration: 1000,
+            choices: ['NO KEY'],
+            on_load: function () {
+                let lastTrialData = jsPsych.data.getLastTrialData().values()[0];
+                if (lastTrialData.correct) {
+                    // Force skip this feedback trial if they got the previous trial correct
+                    jsPsych.finishTrial();
+                }
+            },
+        }
+        timeline.push(feedbackTrial);
     }
 }
 
@@ -112,6 +173,12 @@ let resultsTrial = {
 }
 timeline.push(resultsTrial);
 
+let exitFullScreenTrial = {
+    type: jsPsychFullscreen,
+    fullscreen_mode: false
+};
+timeline.push(exitFullScreenTrial);
+
 //Debrief 
 let debriefTrial = {
     type: jsPsychHtmlKeyboardResponse,
@@ -127,6 +194,10 @@ let debriefTrial = {
     //         .ignore(['trial_type', 'trial_index', 'plugin_version', 'collect', 'stimulus'])
     //         .csv();
     //     console.log(data);
+
+    on_start: function () {
+        jsPsych.progressBar.progress = 1;
+    }
 }
 timeline.push(debriefTrial);
 
