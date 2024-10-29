@@ -1,6 +1,7 @@
 // Initialize the jsPsych library
-let jsPsych = initJsPsych();
-
+let jsPsych = initJsPsych({
+    show_progress_bar: true
+});
 // Define the timeline as an empty array where we will add all our trials
 let timeline = [];
 
@@ -249,6 +250,7 @@ let debriefTrial = {
             .ignore(['stimulus', 'trial_type', 'trial_index', 'plugin_version', 'collect'])
             .csv();
         console.log(data);
+        jsPsych.progressBar.progress = 1;
     }
 }
 timeline.push(debriefTrial);
