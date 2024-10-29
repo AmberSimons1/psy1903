@@ -4,6 +4,8 @@ let jsPsych = initJsPsych();
 // Define the timeline as an empty array where we will add all our trials
 let timeline = [];
 
+let participantId = getCurrentTimestamp();
+
 //Welcome stage
 let welcomeTrial = {
     type: jsPsychHtmlKeyboardResponse,
@@ -49,7 +51,6 @@ let resultsTrial = {
         let prefix = 'plugin-demo';
         let dataPipeExperimentId = 'UKOmlhbKicSb';
         let forceOSFSave = false;
-        let participantId = getCurrentTimestamp();
         let fileName = prefix + '-' + participantId + '.csv';
 
         saveResults(fileName, results, dataPipeExperimentId, forceOSFSave).then(response => {
@@ -60,13 +61,21 @@ let resultsTrial = {
 
 timeline.push(resultsTrial);
 
-//Debrief 
 let debriefTrial = {
     type: jsPsychHtmlKeyboardResponse,
-    stimulus: `<h1> Thank you!</h1 >
-    <p>You can now close this tab</p>
-`,
-    choices: ['NO KEYS'],
+    stimulus: function (data) {
+
+        let linkToQualtricsSurvey = `https://harvard.az1.qualtrics.com/jfe/form/SV_2azkMD7wZPvHrn0?experimentParticipantId=${participantId}`
+
+        return `
+        <h1>Thank you!</h1>
+        <p>
+            To complete your response, 
+            please follow <a href='${linkToQualtricsSurvey}'>this link</a> 
+            and complete the survey you see there.
+        </p>
+    `},
+    choices: ['NO KEYS']
 }
 timeline.push(debriefTrial);
 
