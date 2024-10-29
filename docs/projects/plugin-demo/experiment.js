@@ -42,8 +42,6 @@ let resultsTrial = {
         // Filter and retrieve results as CSV data
         let results = jsPsych.data
             .get()
-            .filter({ collect: true })
-            .ignore(['stimulus', 'trial_type', 'plugin_version', 'collect'])
             .csv();
 
         console.log(results);
