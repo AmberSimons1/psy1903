@@ -73,7 +73,7 @@ timeline.push(primingTrial);
 let iatWelcomeTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `<h1> Task 2 of 3</h1>
-    <p class= 'instructPerTask'> In this final task, you will be shown a series of words and asked to sort them into categories.</p>
+    <p class= 'instructPerTask'> In this task, you will be shown a series of words and asked to sort them into categories.</p>
     <p> Press the <span class = 'key'>ENTER</span> key to begin. </p>
     `,
     choices: ['Enter'],
