@@ -160,7 +160,7 @@ var questionsTrial = {
         { prompt: "Sex is complex; in fact, there might even be more than two sexes.", name: 'question5', labels: likertScale },
         { prompt: "Gender is a complicated issue, and it does not always match up with biological sex.", name: 'question6', labels: likertScale },
         { prompt: "People who say that there are only two legitimate genders are mistaken.", name: 'question7', labels: likertScale },
-        { prompt: "In intimate relationships, women and men take on roles according to gender for a reason; it is really the best way to have a successful relationship.", name: 'question8', labels: likert_scale },
+        { prompt: "In intimate relationships, women and men take on roles according to gender for a reason; it is really the best way to have a successful relationship.", name: 'question8', labels: likertScale },
         { prompt: "In intimate relationships, people should act only according to what is traditionally expected of their gender.", name: 'question9', labels: likertScale },
         { prompt: "It is perfectly okay for people to have intimate relationships with people of the same sex.", name: 'question10', labels: likertScale },
         { prompt: "The best way to raise a child is to have a mother and a father raise the child together.", name: 'question11', labels: likertScale },
