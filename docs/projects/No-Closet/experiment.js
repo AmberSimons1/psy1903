@@ -8,11 +8,11 @@ let timeline = [];
 let consentTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `<h1></h1>
-   <div class="instruction-box">
+   <div>
             <ul>
             This experiment is an educational exercise about learning to program and analyze a psychological experiment and not a “real” scientific experiment. 
             No identifying information is collected, and data will not be shared beyond our class. If you agree to help out by completing the tasks and questionnaires, 
-            please <span class = 'key'>SPACE</span> to continue. Otherwise, you may close this tab. If you have any questions, please reach out to Dr. Garth Coombs <garthcoombs@fas.harvard.edu>, 
+            please <span class = 'key'>SPACE</span> to continue. Otherwise, you may close this tab. If you have any questions, please reach out to Dr. Garth Coombs @garthcoombs@fas.harvard.edu, 
             one of the head instructors of PSY 1903: Programming for Psychological Scientists.
             </ul>
         </div>`,
