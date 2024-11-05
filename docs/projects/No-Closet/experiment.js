@@ -15,8 +15,8 @@ let welcomePage = {
                 <li>In task 3 you will answer a brief set of questions.</li>
             </ul>
         </div>
-    <p>Press the <span class = 'key'>SPACE</span> key to begin</p>`,
-    choices: [' ']
+    <p>Press the <span class = 'key'>ENTER</span> key to begin</p>`,
+    choices: ['Enter']
 };
 timeline.push(welcomePage)
 
@@ -55,10 +55,10 @@ let primingTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `
         <h1>Task 1 of 3</h1>
-        <p class = 'instructPerTask'> Please read the following story. When you are done, press the <span class = 'key'>ENTER</span> key to move to the next task. </p>
+        <p class = 'instructPerTask'> Please read the following story. When you are done, press the <span class = 'key'>SPACE</span> key to move to the next task. </p>
         <p> ${primer.story}
         `,
-    choices: ['Enter'],
+    choices: [' '],
     data: {
         collect: true,
         whichPrime: primer.title,
@@ -70,16 +70,16 @@ let primingTrial = {
 timeline.push(primingTrial);
 
 //Define an IAT welcome page
-let iatWelcome = {
+let iatWelcomeTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `<h1> Task 2 of 3</h1>
     <p class= 'instructPerTask'> In this final task, you will be shown a series of words and asked to sort them into categories.</p>
-    <p> Press the <span class = 'key'>SPACE</span> key to begin. </p>
+    <p> Press the <span class = 'key'>ENTER</span> key to begin. </p>
     `,
-    choices: [' '],
+    choices: ['Enter'],
 };
 
-timeline.push(iatWelcome);
+timeline.push(iatWelcomeTrail);
 let number = 1;
 
 for (let block of conditions) {
@@ -87,17 +87,17 @@ for (let block of conditions) {
     let leftCategory = block.categories[0];
     let rightCategory = block.categories[1];
 
-    let instructionsPage = {
+    let instructionsPageTrial = {
         type: jsPsychHtmlKeyboardResponse,
         stimulus: `<h1>Part ${number}</h1>
         <p> In this part the two categories will be: <strong>${leftCategory}</strong> and <strong>${rightCategory}</strong></p>
         <p> If the word you see in the middle of the screen should be sorted into the <strong>${leftCategory}</strong> press the <span class = 'key'>F</span> key.</p>
         <p> If the word should be sorted into the <strong>${rightCategory}</strong> press the <span class = 'key'>J</span> key.</p>
-        <p> Press the <span class = 'key'>ENTER</span> key to begin </p>`,
+        <p> Press the <span class = 'key'>SPACE</span> key to begin </p>`,
         //the word “space” and the letters “F” and “J” should use CSS and the span element to look like keys
-        choices: ['Enter']
+        choices: [' ']
     };
-    timeline.push(instructionsPage);
+    timeline.push(instructionsPageTrial);
     number++;
     console.log(count);
 
@@ -124,11 +124,7 @@ for (let block of conditions) {
             },
 
             on_finish: function (data) {
-                if (data.response == trial.expectedResponse) {
-                    data.correct = true;
-                } else {
-                    data.correct = false;
-                }
+                data.correct = data.response == trial.expectedResponse
             }
         };
         timeline.push(wordTrial);
@@ -144,7 +140,7 @@ for (let block of conditions) {
     };
 };
 
-let likert_scale = [
+let likertScale = [
     "Strongly Disagree",
     "Disagree",
     "Neutral",
@@ -152,26 +148,26 @@ let likert_scale = [
     "Strongly Agree"
 ];
 
-var Questions = {
+var questionsTrial = {
     type: jsPsychSurveyLikert,
-    preamble: `<h1>Task 2 of 3</h1>
+    preamble: `<h1>Task 3 of 3</h1>
     <p> Please answer the following questions.`,
     questions: [
-        { prompt: "Masculinity and femininity are determined by biological factors, such as genes and hormones, before birth.", name: 'Question1', labels: likert_scale },
-        { prompt: "There are only two sexes: male and female.", name: 'Question2', labels: likert_scale },
-        { prompt: "All people are either male or female.", name: 'Question3', labels: likert_scale },
-        { prompt: "Gender is the same thing as sex.", name: 'Question4', labels: likert_scale },
-        { prompt: "Sex is complex; in fact, there might even be more than two sexes.", name: 'Question5', labels: likert_scale },
-        { prompt: "Gender is a complicated issue, and it does not always match up with biological sex.", name: 'Question6', labels: likert_scale },
-        { prompt: "People who say that there are only two legitimate genders are mistaken.", name: 'Question7', labels: likert_scale },
-        { prompt: "In intimate relationships, women and men take on roles according to gender for a reason; it is really the best way to have a successful relationship.", name: 'Question9', labels: likert_scale },
-        { prompt: "In intimate relationships, people should act only according to what is traditionally expected of their gender.", name: 'Question10', labels: likert_scale },
-        { prompt: "It is perfectly okay for people to have intimate relationships with people of the same sex.", name: 'Question11', labels: likert_scale },
-        { prompt: "The best way to raise a child is to have a mother and a father raise the child together.", name: 'Question12', labels: likert_scale },
-        { prompt: "In healthy intimate relationships, women may sometimes take on stereotypical ‘male’ roles, and men may sometimes take on stereotypical ‘female’ roles.", name: 'Question13', labels: likert_scale },
-        { prompt: "Women and men need not fall into stereotypical gender roles when in an intimate relationship.", name: 'Question14', labels: likert_scale },
-        { prompt: "People should partner with whomever they choose, regardless of sex or gender", name: 'Question15', labels: likert_scale },
-        { prompt: "There are particular ways that men should act and particular ways that women should act in relationships.", name: 'Question16', labels: likert_scale },
+        { prompt: "Masculinity and femininity are determined by biological factors, such as genes and hormones, before birth.", name: 'question1', labels: likertScale },
+        { prompt: "There are only two sexes: male and female.", name: 'question2', labels: likertScale },
+        { prompt: "All people are either male or female.", name: 'question3', labels: likertScale },
+        { prompt: "Gender is the same thing as sex.", name: 'question4', labels: likertScale },
+        { prompt: "Sex is complex; in fact, there might even be more than two sexes.", name: 'question5', labels: likertScale },
+        { prompt: "Gender is a complicated issue, and it does not always match up with biological sex.", name: 'question6', labels: likertScale },
+        { prompt: "People who say that there are only two legitimate genders are mistaken.", name: 'question7', labels: likertScale },
+        { prompt: "In intimate relationships, women and men take on roles according to gender for a reason; it is really the best way to have a successful relationship.", name: 'question8', labels: likert_scale },
+        { prompt: "In intimate relationships, people should act only according to what is traditionally expected of their gender.", name: 'question9', labels: likertScale },
+        { prompt: "It is perfectly okay for people to have intimate relationships with people of the same sex.", name: 'question10', labels: likertScale },
+        { prompt: "The best way to raise a child is to have a mother and a father raise the child together.", name: 'question11', labels: likertScale },
+        { prompt: "In healthy intimate relationships, women may sometimes take on stereotypical ‘male’ roles, and men may sometimes take on stereotypical ‘female’ roles.", name: 'question12', labels: likertScale },
+        { prompt: "Women and men need not fall into stereotypical gender roles when in an intimate relationship.", name: 'question13', labels: likertScale },
+        { prompt: "People should partner with whomever they choose, regardless of sex or gender", name: 'question14', labels: likertScale },
+        { prompt: "There are particular ways that men should act and particular ways that women should act in relationships.", name: 'question15', labels: likertScale },
     ],
     data: {
         collect: true,
@@ -179,7 +175,7 @@ var Questions = {
     }
 };
 
-timeline.push(Questions);
+timeline.push(questionsTrial);
 
 let resultsTrial = {
     type: jsPsychHtmlKeyboardResponse,
@@ -193,7 +189,7 @@ let resultsTrial = {
     on_start: function () {
         //  ⭐ Update the following three values as appropriate ⭐
         let prefix = 'no-closet';
-        let dataPipeExperimentId = 'UKOmlhbKicSb';
+        let dataPipeExperimentId = 'xGrIMXyGYhic';
         let forceOSFSave = false;
 
         // Filter and retrieve results as CSV data
