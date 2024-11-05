@@ -5,7 +5,7 @@ let jsPsych = initJsPsych({
 // Define the timeline as an empty array where we will add all our trials
 let timeline = [];
 
-let welcomePage = {
+let welcomePageTrial = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: `<h1>Welcome to our IAT </h1>
    <div class="instruction-box">
@@ -18,7 +18,7 @@ let welcomePage = {
     <p>Press the <span class = 'key'>ENTER</span> key to begin</p>`,
     choices: ['Enter']
 };
-timeline.push(welcomePage)
+timeline.push(welcomePageTrial)
 
 let primeOptions = [
     {
@@ -79,7 +79,7 @@ let iatWelcomeTrial = {
     choices: ['Enter'],
 };
 
-timeline.push(iatWelcomeTrail);
+timeline.push(iatWelcomeTrial);
 let number = 1;
 
 for (let block of conditions) {
