@@ -18,7 +18,7 @@ let consentTrial = {
         </div>`,
     choices: [' ']
 };
-timeline.push(welcomePageTrial)
+timeline.push(consentTrial)
 
 let welcomePageTrial = {
     type: jsPsychHtmlKeyboardResponse,
