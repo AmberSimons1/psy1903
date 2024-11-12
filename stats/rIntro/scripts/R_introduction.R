@@ -18,3 +18,23 @@ setwd("~/Documents/psy1903/stats/rIntro/scripts")
 
 ## Save this script as R_introduction.R within your scripts directory (you can just use command+S or File → Save As)
 
+#### (2) Installation of packages ----------------------------------------------
+
+## Packages are essential toolboxes that you load into R and allow you to do cool things with your data
+## One package called "pacman" makes installing packages very easy...
+
+if (!require("pacman")) {install.packages("pacman"); require("pacman")}  # First install and load in pacman to R
+
+## Then use p_load and a list of all of the packages that you need for the project (with each one being in "quotes")
+
+p_load("tidyverse","rstudioapi","lme4","emmeans","psych","corrplot")  # tidyverse contains many packages like dplyr, tidyr, stringr, and ggplot2, among others, and the additional packages should cover our data manipulations, plotting, and analyses
+
+mydata <- read.csv("../data/data.csv")
+
+head(mydata)      # View the first few rows
+str(mydata)       # See the structure of the data frame
+summary(mydata)   #get a summary of each column 
+tail(mydata)      #last few rows
+
+mydata$moodGroup <- as.factor(mydata$moodGroup)
+
