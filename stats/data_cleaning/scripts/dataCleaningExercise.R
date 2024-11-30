@@ -14,6 +14,8 @@ if (!require("pacman")) {install.packages("pacman"); require("pacman")}  # First
 
 ## Then use p_load and a list of all of the packages that you need for the project (with each one being in "quotes")
 p_load("tidyverse","rstudioapi","lme4","emmeans","psych","corrplot", "jsonlite")  # tidyverse contains many packages like dplyr, tidyr, stringr, and ggplot2, among others, and the additional packages should cover our data manipulations, plotting, and analyses
+install.packages("ggplot2")
+library(ggplot2)
 
 ## Create a data frame for the first iat participant 
 iat_data1 <- read.csv("~/Documents/psy1903/osfstorage-archive/no-closet-2024-11-05-21-47-34.csv", header = TRUE, sep = ",", na.strings = "NA")
@@ -47,7 +49,7 @@ str(iat_data2)
 calculate_IAT_dscore <- function(data){
 
 ## Step 2: Filter out trials with rt < 300 & > 5000 ms or only select trials between those (subset full data frame into new data frame called tmp)
-  tmp <- data[data$rt > 300 & data$rt < 5000 & data$correct == "true",]
+  tmp <- data[data$rt > 300 & data$rt < 5000 & data$correct == TRUE,]
 
 ## Step 3: Separate congruent and incongruent trials (subset tmp into two new data frames: congruent_trials and incongruent_trials) 
     congruent_trials <- tmp[tmp$expectedCategoryAsDisplayed == "Mental illness or LGBTQ+" |
@@ -63,13 +65,12 @@ calculate_IAT_dscore <- function(data){
     pooled_sd <- sd(tmp$rt, na.rm = TRUE)
     
 ## Step 6: Calculate D-score
-    d_score <- (congruent_means - incongruent_means) / pooled_sd
+    d_score <- (incongruent_means - congruent_means) / pooled_sd
     
 ## Step 7: Return D-score
     return(d_score)
 }
 
-calculate_IAT_dscore(iat_data2)
 
 ## Initiate function called score_questionnaire that accepts a single argument called `data`. Within this function...
 score_questionnaire <- function(data){
@@ -106,10 +107,10 @@ directory_path <- "~/Documents/psy1903/osfstorage-archive"
 files_list <- list.files(path = directory_path, pattern = "\\.csv$", full.names = TRUE)
 
 ## Create an empty data frame called dScores that has two columns (IAT) or three columns (EST) and as many rows as you have data files (e.g., participants)
-dScores <- data.frame(matrix(nrow = length(files_list), ncol = 2))
+dScores <- data.frame(matrix(nrow = length(files_list), ncol = 4))
 
 ## Rename the default column names to something meaningful
-colnames(dScores) <- c("participant_ID", "d_score")
+colnames(dScores) <- c("participant_ID", "d_score", "whichPrime", "questionnaire")
 
 ## Initiate variable i to represent row numbers for each iteration, starting with 1
 i = 1
@@ -117,9 +118,16 @@ i = 1
 ## Initiate a for loop that iterates across each file in files_list
 
 for (file in files_list){
+  
   # Use read.csv to read in your file as a temporary data frame called tmp
   tmp <- read.csv(file)
-  tmp$rt <- tmp.rt
+  tmp$rt <- as.numeric(tmp$rt)
+  tmp$correct <- as.logical(tmp$correct)
+  
+  column_names <- c("expectedCategory", "expectedCategoryAsDisplayed", "leftCategory", "rightCategory")
+  for (column_name in column_names){
+    tmp[,column_name] <- as.factor(tmp[,column_name])
+  }
   
   # Assign participant_ID as the basename of the file
   participant_ID <- tools::file_path_sans_ext(basename(file))
@@ -128,18 +136,103 @@ for (file in files_list){
   dScores[i, "participant_ID"] <- participant_ID
   
   # Using similar logic, isolate the d_score OR c("emotionA_d_score", "emotionB_d_score") column(s) for the current row number (i) and assign it to be the current d-score(s) by using our calculate_IAT_dscore or calculate_EST_dscore on the tmp data file
+  
   dScores[i, "d_score"] <- calculate_IAT_dscore(tmp)
+
   # Remove the temporary data file tmp
   
+  #Whichprime
+  dScores[i, "whichPrime"] <- tmp[tmp$trialType == "prime", "whichPrime"]
+  #print(dScores[i, "whichPrime"])
+  
+  dScores[i, "questionnaire"] <- score_questionnaire(tmp)
   rm(tmp)
   
   # Increase our row number variable i by one for the next iteration
   i <- i + 1
 }
+
+dScores$whichPrime <- as.factor(dScores$whichPrime)
+dScores$d_score <- as.numeric(dScores$d_score)
+dScores$questionnaire <- as.numeric(dScores$questionnaire)
+
+
 ## Outside of the for loop, save the new dScores data frame using write.csv() into your data_cleaning/data subdirectory:
 write.csv(dScores,"~/Documents/psy1903/stats/data_cleaning/data/participant_dScores.csv", row.names = FALSE)
 
-score_questionnaire(iat_data1)
+anova_scores <- aov(dScores$d_score ~ dScores$whichPrime)
+summary(anova_scores)
+
+TukeyHSD(anova_scores)
+
+cor.test(dScores$d_score, dScores$questionnaire)
+
+png("~/Documents/psy1903/stats/data_cleaning/output/Fig1_baseR_histogram.png", width = 600, height = 500)
+
+hist(dScores$d_score,
+     xlab = "D-Scores",
+     ylab = "Frequency",
+     main = "Distribution of D-Scores",)
+
+dev.off()
+
+
+#histogram ggplot
+png("~/Documents/psy1903/stats/data_cleaning/output/Fig2_ggplot_histogram.png", width = 600, height = 500)
+
+ggplot(data = dScores,aes(x = d_score))+
+  geom_histogram(fill="skyblue",
+                 col = "black",
+                 binwidth = 0.1 )+
+  labs(title = "Distribution of D-Scores",
+       x = "D-Scores",
+       y = "Frequency")+
+  theme_minimal()
+
+dev.off()
+
+#hist by prime
+png("~/Documents/psy1903/stats/data_cleaning/output/Fig3_ggplot_histogram_by_prime.png", width = 600, height = 500)
+
+ggplot(data = dScores,aes(x = d_score))+
+  geom_boxplot(fill="skyblue",
+               col = "black",
+               binwidth = 0.1)+
+  labs(title = "Distribution of D-Scores",
+       x = "D-Scores",
+       y = "Frequency")+
+  theme_classic()+
+  facet_wrap(~whichPrime)
+
+dev.off()
+
+#boxplot
+png("~/Documents/psy1903/stats/data_cleaning/output/Fig4_ggplot_boxplot.png", width = 600, height = 500)
+
+ggplot(data = dScores,aes(x = whichPrime, y = d_score, fill = whichPrime))+
+  geom_boxplot(col = "black")+
+  labs(title = "Effect of Prime on D-Scores",
+       x = "Prime Condition",
+       y = "D-Scores")+
+  theme_classic()+
+  theme(legend.position = "none")+
+  scale_x_discrete(labels = c("Queer" = "Queer", "Control" = "Control", "CisHet" = "Cisgender Heterosexual"))
+
+
+dev.off()
+
+#scatterplot
+png("~/Documents/psy1903/stats/data_cleaning/output/Fig5_ggplot_scatter.png", width = 600, height = 500)
+
+ggplot(data = dScores,aes(x = questionnaire, y = d_score))+
+  geom_point()+
+  labs(title = "Correlation Between Questionnaire and D-Scores",
+       x = "Questionnaire",
+       y = "D-Scores")+
+  theme_classic()+
+  geom_smooth(method = "lm", se = FALSE)
+  
+dev.off()
 
 
 
