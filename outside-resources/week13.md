@@ -53,5 +53,5 @@ Run rlang::last_trace() to see where the error occurred.
 
 + [custom theme](https://rpubs.com/mclaire19/ggplot2-custom-themes)
 
-+ [colors] (https://sape.inf.usi.ch/quick-reference/ggplot2/colour)
++ [colors](https://sape.inf.usi.ch/quick-reference/ggplot2/colour)
 
