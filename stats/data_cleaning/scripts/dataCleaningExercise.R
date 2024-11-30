@@ -234,6 +234,85 @@ ggplot(data = dScores,aes(x = questionnaire, y = d_score))+
   
 dev.off()
 
+my_colors <- c("#023E8A", "#0077B6", "#0096C7", "#00B4D8", "#48CAE4")
+
+#Creating my own theme 
+my_theme <- function() {
+  font <- "Calibri"
+  
+  theme_minimal(base_family = font) +
+  
+  theme(
+  #Grid elements
+    panel.grid.major = element_line(color = "black", size = 0.6),
+    panel.grid.minor = element_line(color = "gray", size = 0.3),
+    
+  #Titles
+    plot.title = element_text(color = "dodgerblue3", size = 18, margin = margin(t = 10)),
+    axis.title.x = element_text(color = "deepskyblue4"),
+    axis.title.y = element_text(color = "deepskyblue4"),
+  
+  #Background 
+    plot.background = element_rect(fill = "lightpink1", color = "black", size = 1.5),
+    panel.background = element_rect(fill = "white", color = "black", size = 1),
+  
+  #Legend
+    legend.background = element_rect(fill = "deeppink1", color = "black"),
+    legend.key = element_rect(fill = "lightpink1", color = "black")
+  )+
+  
+  (if (!is.null(my_colors)) scale_fill_manual(values = my_colors) else NULL)
+
+}
+
+# Creating my own theme
+my_theme <- function(my_colors = NULL) {
+  font <- "Arial"  # Define font
+  
+  # Base theme
+  theme_classic(base_family = font) +
+    theme(
+      # Grid elements
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      
+      # Titles
+      plot.title = element_text(color = "dodgerblue3", size = 18),
+      axis.title.x = element_text(color = "deepskyblue4"),
+      axis.title.y = element_text(color = "deepskyblue4"),
+      
+      # Background
+      plot.background = element_rect(fill = "lightpink1", color = "black", size = 1.5),
+      panel.background = element_rect(fill = "white", color = "black", size = 1),
+      
+      # Legend
+      legend.background = element_rect(fill = "deeppink1", color = "black"),
+      legend.key = element_rect(fill = "lightpink1", color = "black"),
+      
+      # Legend position
+      legend.position = "none"  # Move this setting here
+    )
+}
+
+#boxplot
+png("~/Documents/psy1903/stats/data_cleaning/output/Fig6_custom_theme.png", width = 600, height = 500)
+
+ggplot(data = dScores,aes(x = whichPrime, y = d_score, fill = whichPrime))+
+  geom_boxplot(col = "black")+
+  labs(title = "Effect of Prime on D-Scores",
+       x = "Prime Condition",
+       y = "D-Scores")+
+  my_theme()+
+  theme(legend.position = "none")+
+  scale_x_discrete(labels = c("Queer" = "Queer 1", "Control" = "Control", "CisHet" = "Cisgender Heterosexual"))
+
+
+dev.off()
+
+
+
+
+
 
 
 
