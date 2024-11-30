@@ -1,21 +1,13 @@
-##Week 11 Task set
-##create directories
+#### Load Packages & Set Working Directory ------
 getwd()
-setwd("~/Documents/psy1903/stats/")
-dir.create("data_cleaning")
-dir.create("data_cleaning/scripts")
-dir.create("data_cleaning/data")
-dir.create("data_cleaning/output")
+setwd("~/Documents/psy1903/stats/final_stats/scripts")
 
-setwd("~/Documents/psy1903/stats/data_cleaning/scripts")
+if (!require("pacman")) {install.packages("pacman"); require("pacman")}
 
-## Use pacman
-if (!require("pacman")) {install.packages("pacman"); require("pacman")}  # First install and load in pacman to R
-
-## Then use p_load and a list of all of the packages that you need for the project (with each one being in "quotes")
-p_load("tidyverse","rstudioapi","lme4","emmeans","psych","corrplot", "jsonlite")  # tidyverse contains many packages like dplyr, tidyr, stringr, and ggplot2, among others, and the additional packages should cover our data manipulations, plotting, and analyses
-install.packages("ggplot2")
+p_load("tidyverse","rstudioapi","lme4","emmeans","psych","corrplot","jsonlite")
 library(ggplot2)
+
+#### D-score Function --------------------------------
 
 ## Create a data frame for the first iat participant 
 iat_data1 <- read.csv("~/Documents/psy1903/osfstorage-archive/no-closet-2024-11-05-21-47-34.csv", header = TRUE, sep = ",", na.strings = "NA")
@@ -24,15 +16,12 @@ iat_data1 <- read.csv("~/Documents/psy1903/osfstorage-archive/no-closet-2024-11-
 str(iat_data1)
 summary(iat_data1)
 
-#### Question 3 ----
-
 iat_data2 <- iat_data1[iat_data1$expectedCategoryAsDisplayed == "Mental illness or Cishet" |
                          iat_data1$expectedCategoryAsDisplayed == "Mental illness or LGBTQ+" | 
                          iat_data1$expectedCategoryAsDisplayed == "Physical illness or Cishet" |
                          iat_data1$expectedCategoryAsDisplayed == "Physical illness or LGBTQ+", c("trial_index", "rt", "response", "word",
-                            "expectedCategory", "expectedCategoryAsDisplayed", "leftCategory", "rightCategory", "correct")]
+                                                                                                  "expectedCategory", "expectedCategoryAsDisplayed", "leftCategory", "rightCategory", "correct")]
 ## factor 
-
 column_names <- c("expectedCategory", "expectedCategoryAsDisplayed", "leftCategory", "rightCategory")
 
 for (column_name in column_names){
@@ -41,38 +30,33 @@ for (column_name in column_names){
 
 str(iat_data2)
 
-
-#### IAT -----
-
-## Step 1: Specify your function with one argument, data
-
+## Specify your function with one argument, data
 calculate_IAT_dscore <- function(data){
-
-## Step 2: Filter out trials with rt < 300 & > 5000 ms or only select trials between those (subset full data frame into new data frame called tmp)
-  tmp <- data[data$rt > 300 & data$rt < 5000 & data$correct == TRUE,]
-
-## Step 3: Separate congruent and incongruent trials (subset tmp into two new data frames: congruent_trials and incongruent_trials) 
-    congruent_trials <- tmp[tmp$expectedCategoryAsDisplayed == "Mental illness or LGBTQ+" |
-                    tmp$expectedCategoryAsDisplayed == "Physical illness or Cishet",]
-    incongruent_trials <- tmp[tmp$expectedCategoryAsDisplayed == "Mental illness or Cishet" |
-                       tmp$expectedCategoryAsDisplayed == "Physical illness or LGBTQ+",]
   
-## Step 4: Calculate mean for congruent and mean for incongruent trials (mean_congruent, mean_incongruent)
-    congruent_means <- mean(congruent_trials$rt, na.rm = TRUE)
-    incongruent_means <- mean(incongruent_trials$rt, na.rm = TRUE)
-    
-## Step 5: Calculate standard deviation for all trials (pooled_sd) 
-    pooled_sd <- sd(tmp$rt, na.rm = TRUE)
-    
-## Step 6: Calculate D-score
-    d_score <- (incongruent_means - congruent_means) / pooled_sd
-    
-## Step 7: Return D-score
-    return(d_score)
+  ## Filter out trials with rt < 300 & > 5000 ms or only select trials between those (subset full data frame into new data frame called tmp)
+  tmp <- data[data$rt > 300 & data$rt < 5000 & data$correct == TRUE,]
+  
+  ## Separate congruent and incongruent trials (subset tmp into two new data frames: congruent_trials and incongruent_trials) 
+  congruent_trials <- tmp[tmp$expectedCategoryAsDisplayed == "Mental illness or LGBTQ+" |
+                            tmp$expectedCategoryAsDisplayed == "Physical illness or Cishet",]
+  incongruent_trials <- tmp[tmp$expectedCategoryAsDisplayed == "Mental illness or Cishet" |
+                              tmp$expectedCategoryAsDisplayed == "Physical illness or LGBTQ+",]
+  
+  ## Calculate mean for congruent and mean for incongruent trials (mean_congruent, mean_incongruent)
+  congruent_means <- mean(congruent_trials$rt, na.rm = TRUE)
+  incongruent_means <- mean(incongruent_trials$rt, na.rm = TRUE)
+  
+  ## Calculate standard deviation for all trials (pooled_sd) 
+  pooled_sd <- sd(tmp$rt, na.rm = TRUE)
+  
+  ## Calculate D-score
+  d_score <- (incongruent_means - congruent_means) / pooled_sd
+  
+  ## Return D-score
+  return(d_score)
 }
 
-
-## Initiate function called score_questionnaire that accepts a single argument called `data`. Within this function...
+#### Questionnaire Scoring Function ---------------
 score_questionnaire <- function(data){
   
   # Extract questionnaire data cell
@@ -97,8 +81,7 @@ score_questionnaire <- function(data){
   return(score)
 }
 
-
-#### Question 5 -----iat_data1#### Question 5 -----
+#### For Loop ------------------------------------------
 
 ## Set a variable called directory_path with the path to the location of your data csv files. This directory should *only* contain your raw participant csv data files and no other files.
 directory_path <- "~/Documents/psy1903/osfstorage-archive"
@@ -138,7 +121,7 @@ for (file in files_list){
   # Using similar logic, isolate the d_score OR c("emotionA_d_score", "emotionB_d_score") column(s) for the current row number (i) and assign it to be the current d-score(s) by using our calculate_IAT_dscore or calculate_EST_dscore on the tmp data file
   
   dScores[i, "d_score"] <- calculate_IAT_dscore(tmp)
-
+  
   # Remove the temporary data file tmp
   
   #Whichprime
@@ -158,16 +141,20 @@ dScores$questionnaire <- as.numeric(dScores$questionnaire)
 
 
 ## Outside of the for loop, save the new dScores data frame using write.csv() into your data_cleaning/data subdirectory:
-write.csv(dScores,"~/Documents/psy1903/stats/data_cleaning/data/participant_dScores.csv", row.names = FALSE)
+write.csv(dScores,"~/Documents/psy1903/stats/final_stats/data/participant_dScores.csv", row.names = FALSE)
 
+#### ANOVA -------------------------------------------
 anova_scores <- aov(dScores$d_score ~ dScores$whichPrime)
 summary(anova_scores)
 
+#### T-Test ---------------------------------------------
 TukeyHSD(anova_scores)
 
+#### Correlation ---------------------------------------
 cor.test(dScores$d_score, dScores$questionnaire)
 
-png("~/Documents/psy1903/stats/data_cleaning/output/Fig1_baseR_histogram.png", width = 600, height = 500)
+#### Base R Histogram -------------------------------
+png("~/Documents/psy1903/stats/final_stats/output/Fig1_baseR_histogram.png", width = 600, height = 500)
 
 hist(dScores$d_score,
      xlab = "D-Scores",
@@ -176,9 +163,8 @@ hist(dScores$d_score,
 
 dev.off()
 
-
-#histogram ggplot
-png("~/Documents/psy1903/stats/data_cleaning/output/Fig2_ggplot_histogram.png", width = 600, height = 500)
+#### ggplot Histogram --------------------------------
+png("~/Documents/psy1903/stats/final_stats/output/Fig2_ggplot_histogram.png", width = 600, height = 500)
 
 ggplot(data = dScores,aes(x = d_score))+
   geom_histogram(fill="skyblue",
@@ -191,13 +177,12 @@ ggplot(data = dScores,aes(x = d_score))+
 
 dev.off()
 
-#hist by prime
-png("~/Documents/psy1903/stats/data_cleaning/output/Fig3_ggplot_histogram_by_prime.png", width = 600, height = 500)
+#### ggplot Histogram by Prime ---------------------
+png("~/Documents/psy1903/stats/final_stats/output/Fig3_ggplot_histogram_by_prime.png", width = 600, height = 500)
 
 ggplot(data = dScores,aes(x = d_score))+
   geom_histogram(fill="skyblue",
-               col = "black",
-               binwidth = 0.1)+
+               col = "black")+
   labs(title = "Distribution of D-Scores",
        x = "D-Scores",
        y = "Frequency")+
@@ -206,8 +191,8 @@ ggplot(data = dScores,aes(x = d_score))+
 
 dev.off()
 
-#boxplot
-png("~/Documents/psy1903/stats/data_cleaning/output/Fig4_ggplot_boxplot.png", width = 600, height = 500)
+#### ggplot Box Plot ----------------------------------
+png("~/Documents/psy1903/stats/final_stats/output/Fig4_ggplot_boxplot.png", width = 600, height = 500)
 
 ggplot(data = dScores,aes(x = whichPrime, y = d_score, fill = whichPrime))+
   geom_boxplot(col = "black")+
@@ -221,8 +206,8 @@ ggplot(data = dScores,aes(x = whichPrime, y = d_score, fill = whichPrime))+
 
 dev.off()
 
-#scatterplot
-png("~/Documents/psy1903/stats/data_cleaning/output/Fig5_ggplot_scatter.png", width = 600, height = 500)
+#### ggplot Scatter Plot -------------------------------
+png("~/Documents/psy1903/stats/final_stats/output/Fig5_ggplot_scatter.png", width = 600, height = 500)
 
 ggplot(data = dScores,aes(x = questionnaire, y = d_score))+
   geom_point()+
@@ -231,9 +216,10 @@ ggplot(data = dScores,aes(x = questionnaire, y = d_score))+
        y = "D-Scores")+
   theme_classic()+
   geom_smooth(method = "lm", se = FALSE)
-  
+
 dev.off()
 
+#### ggplot Custom Theme ---------------------------
 # Creating my own theme
 my_theme <- function(my_colors = NULL) {
   font <- "Arial"  # Define font
@@ -264,7 +250,7 @@ my_theme <- function(my_colors = NULL) {
 }
 
 #boxplot
-png("~/Documents/psy1903/stats/data_cleaning/output/Fig6_custom_theme.png", width = 600, height = 500)
+png("~/Documents/psy1903/stats/final_stats/output/Fig6_custom_theme.png", width = 600, height = 500)
 
 ggplot(data = dScores,aes(x = whichPrime, y = d_score, fill = whichPrime))+
   geom_boxplot(col = "black")+
@@ -275,13 +261,5 @@ ggplot(data = dScores,aes(x = whichPrime, y = d_score, fill = whichPrime))+
   theme(legend.position = "none")+
   scale_x_discrete(labels = c("Queer" = "Queer 1", "Control" = "Control", "CisHet" = "Cisgender Heterosexual"))
 
-
 dev.off()
-
-
-
-
-
-
-
 
