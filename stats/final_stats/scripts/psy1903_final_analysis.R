@@ -39,15 +39,15 @@ calculate_IAT_dscore <- function(data){
   ## Separate congruent and incongruent trials (subset tmp into two new data frames: congruent_trials and incongruent_trials) 
   congruent_trials <- tmp[tmp$expectedCategoryAsDisplayed == "Mental illness or LGBTQ+" |
                             tmp$expectedCategoryAsDisplayed == "Physical illness or Cishet",]
-  incongruent_trials <- tmp[tmp$expectedCategoryAsDisplayed == "Mental illness or Cishet" |
-                              tmp$expectedCategoryAsDisplayed == "Physical illness or LGBTQ+",]
+  incongruent_trials <- tmp[tmp$expectedCategoryAsDisplayed == "Physical illness or LGBTQ+" |
+                              tmp$expectedCategoryAsDisplayed == "Mental illness or Cishet",]
   
   ## Calculate mean for congruent and mean for incongruent trials (mean_congruent, mean_incongruent)
   congruent_means <- mean(congruent_trials$rt, na.rm = TRUE)
   incongruent_means <- mean(incongruent_trials$rt, na.rm = TRUE)
   
   ## Calculate standard deviation for all trials (pooled_sd) 
-  pooled_sd <- sd(tmp$rt, na.rm = TRUE)
+  pooled_sd <- sd(c(congruent_trials$rt, incongruent_trials$rt), na.rm = TRUE)
   
   ## Calculate D-score
   d_score <- (incongruent_means - congruent_means) / pooled_sd
@@ -262,4 +262,13 @@ ggplot(data = dScores,aes(x = whichPrime, y = d_score, fill = whichPrime))+
   scale_x_discrete(labels = c("Queer" = "Queer 1", "Control" = "Control", "CisHet" = "Cisgender Heterosexual"))
 
 dev.off()
+
+
+#### Are the dscores significant ----
+
+result <- t.test(dScores$d_score, mu = 0) 
+#mu = 0: The null hypothesis value to test against (0 in this case).
+
+result$p.value  # Extract the p-value 
+result$conf.int # Extract the confidence interval
 
