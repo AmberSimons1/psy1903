@@ -1,4 +1,4 @@
-# Outside Resources Log - Week 12
+# Outside Resources Log - Week 13
 
 ## AI Prompts
 + "What is wrong with this " ggplot(data = dScores,aes(x = d_score))+
