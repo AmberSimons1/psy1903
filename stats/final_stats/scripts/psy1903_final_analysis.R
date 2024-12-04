@@ -267,6 +267,7 @@ dev.off()
 #### Are the dscores significant ----
 
 result <- t.test(dScores$d_score, mu = 0) 
+result
 #mu = 0: The null hypothesis value to test against (0 in this case).
 
 result$p.value  # Extract the p-value 
